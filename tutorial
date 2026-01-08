@@ -1,0 +1,30 @@
+esentialy we use the code here with the comments to explain what it does
+the 8_ bit code will have to be writen by the pico in the power shell.
+
+
+
+import time # Allows the Pico to wait
+import usb_hid # Accesses the USB port
+from adafruit_hid.keyboard import Keyboard # Loads keyboard tools
+from adafruit_hid.keycode import Keycode # Loads keyboard keys
+from adafruit_hid.keyboard_layout_us import KeyboardLayoutUS # Helps type sentences
+
+kbd = Keyboard(usb_hid.devices) # Initializes the keyboard
+layout = KeyboardLayoutUS(kbd) # Sets typing to US English
+
+time.sleep(5) # SAFETY DELAY: Gives you 5 seconds to unplug if needed
+
+# --- OPEN POWERSHELL ---
+kbd.press(Keycode.GUI, Keycode.R) # Press Windows Key + R
+kbd.release_all() # Let go of keys
+time.sleep(0.5) # Wait for the Run box to appear
+
+layout.write("powershell") # Type the word powershell
+kbd.press(Keycode.ENTER) # Press Enter
+kbd.release_all() # Let go of Enter
+
+# --- TYPE IN POWERSHELL ---
+time.sleep(1.5) # Wait for the blue PowerShell window to load
+layout.write("Write-Host 'Hi! This was typed by my Pico 2 W.'") # Type a PowerShell command
+kbd.press(Keycode.ENTER) # Press Enter to run the command
+kbd.release_all() # Let go of Enter
