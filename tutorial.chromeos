@@ -1,0 +1,47 @@
+import time
+import usb_hid
+from adafruit_hid.keyboard import Keyboard
+from adafruit_hid.keycode import Keycode
+from adafruit_hid.keyboard_layout_us import KeyboardLayoutUS
+
+# Initialize the Keyboard object so the Pico can send key presses
+kbd = Keyboard(usb_hid.devices)
+
+# Initialize the US English layout so the Pico knows where letters are on the keys
+layout = KeyboardLayoutUS(kbd)
+
+# The URL of the 8-bit visualizer or terminal you want to display
+URL = "https://paleotronic.com/retro-terminal/"
+
+# IMPORTANT: Wait 2 seconds after plugging in. 
+# This gives ChromeOS time to "handshake" with the Pico before we start typing.
+time.sleep(2)
+
+# STEP 1: Open a new browser tab.
+# This sends the 'Ctrl' and 'T' keys simultaneously.
+kbd.send(Keycode.CONTROL, Keycode.T)
+
+# Brief pause to let the new tab animation finish.
+time.sleep(1)
+
+# STEP 2: Type out the 8-bit website address.
+# The layout.write function types the URL string letter by letter like a human.
+layout.write(URL)
+
+# Press 'Enter' to navigate to the website.
+kbd.send(Keycode.ENTER)
+
+# STEP 3: Wait for the website to load.
+# Some sites take longer; 4 seconds is usually safe for ChromeOS.
+time.sleep(4)
+
+# STEP 4: Force the screen into Fullscreen mode.
+# On a Chromebook, the 'F4' key (the open box icon) triggers fullscreen.
+kbd.send(Keycode.F4) 
+
+# Print a message to the Serial Monitor (the 8-bit Command Prompt we discussed)
+print("--- 8-BIT MODE ENGAGED ---")
+
+# The loop keeps the code alive, but it doesn't need to do anything else.
+while True:
+    pass
